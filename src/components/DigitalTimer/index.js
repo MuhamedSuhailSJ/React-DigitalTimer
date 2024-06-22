@@ -24,7 +24,7 @@ class DigitalTimer extends Component {
 
   updatation = () => {
     console.log('Setted')
-    const {minutes, seconds,buttonstate} = this.state
+    const {minutes, seconds} = this.state
     let milliseconds = minutes * 60000 + seconds * 1000
     milliseconds -= 1000
     const updatedminute = Math.floor(milliseconds / 1000 / 60)
@@ -43,11 +43,12 @@ class DigitalTimer extends Component {
   starttimer = () => {
     const {minutes, seconds, buttonstate} = this.state
     console.log(minutes, seconds)
-    this.intervaltime = setInterval(this.updatation, 1000)
     if (buttonstate === true) {
       console.log('Cleared')
       clearInterval(this.intervaltime)
       this.setState({buttonstate: false})
+    } else {
+      this.intervaltime = setInterval(this.updatation, 1000) // add this line within a else block
     }
   }
 
@@ -59,10 +60,11 @@ class DigitalTimer extends Component {
   render() {
     const {minutes, seconds, buttonstate} = this.state
     const timerbuttonImg = buttonstate
-      ? 'https://assets.ccbp.in/frontend/react-js/pause-icon-img.png '
+      ? 'https://assets.ccbp.in/frontend/react-js/pause-icon-img.png'
       : 'https://assets.ccbp.in/frontend/react-js/play-icon-img.png'
     const timerbuttonAlt = buttonstate ? 'pause icon' : ' play icon'
     const timerresultcondition = buttonstate ? 'Running' : 'Paused'
+    console.log(timerbuttonAlt)
     return (
       <div className="timerbgcontainer">
         <div>
@@ -71,10 +73,10 @@ class DigitalTimer extends Component {
         <div className="timercontainer">
           <div className="timeresultcontainer">
             <div className="timeresultstate">
-              <p>
-                {minutes.toString.length === 1 ? `0${minutes}` : minutes} :{' '}
-                {seconds.toString.length === 1 ? `0${seconds}` : seconds}
-              </p>
+              <h1>
+                {minutes.toString().length === 1 ? `0${minutes}` : minutes}:
+                {seconds.toString().length === 1 ? `0${seconds}` : seconds}
+              </h1>
               <p>{timerresultcondition}</p>
             </div>
           </div>
@@ -92,10 +94,10 @@ class DigitalTimer extends Component {
                     className="timericonImg"
                     alt={timerbuttonAlt}
                   />
+                  <p className="timerIcontext">
+                    {buttonstate ? 'Pause' : 'Start'}
+                  </p>
                 </button>
-                <label htmlFor="timerstart" className="timerIcontext">
-                  {buttonstate ? 'Pause' : 'Start'}
-                </label>
               </div>
               <div className="timerbuttoncontainer">
                 <button
@@ -109,13 +111,11 @@ class DigitalTimer extends Component {
                     className="timericonImg"
                     alt="reset icon"
                   />
+                  <p className="timerIcontext">Reset</p>
                 </button>
-                <label htmlFor="timerreset" className="timerIcontext">
-                  Reset
-                </label>
               </div>
             </div>
-            <p>Set Time limit</p>
+            <p>Set Timer limit</p>
             <div>
               <div className="timerinputcontainer">
                 <button
@@ -126,11 +126,7 @@ class DigitalTimer extends Component {
                   -
                 </button>
                 <div>
-                  <input
-                    onChange={this.changeminutes}
-                    value={minutes}
-                    className="inputElement"
-                  />
+                  <p className="inputElement">{minutes}</p>
                 </div>
                 <button
                   onClick={this.incrementrange}
